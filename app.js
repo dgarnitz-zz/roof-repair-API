@@ -9,10 +9,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
-const logOutput = (name) => (data) => console.log(`[${name}] ${data}`)
+//Method for debugging the express application's interaction with the python script
+const logOutput = () => (data) => console.log(`${data}`)
+
 // Method for calling machine learning
 var processImage = () => {
-  let arg1 = 20;
+  let arg1 = 30;
   //const pythonProcess = spawn('python',["./test.py", arg1]);
   
   return new Promise((resolve, reject) => {
@@ -21,17 +23,17 @@ var processImage = () => {
     const out = []
     pythonProcess.stdout.on("data", data =>{
       out.push(data.toString());
-      logOutput('stdout')(data);
-      //console.log(data);
+      logOutput()(data);
+      resolve(data);
     });
 
     process.stderr.on("data", data => {
       err.push(data.toString());
-      logOutput('stderr')(data);
+      logOutput()(data);
     });
 
     process.on('exit', (code, signal) => {
-      logOutput('exit')(`${code} (${signal})`)
+      logOutput()(`${code} (${signal})`)
       if (code === 0) {
         resolve(out);
       } else {
@@ -41,27 +43,13 @@ var processImage = () => {
   });
 }
 
-(async () => {
-  try {
-    const output = await processImage()
-    logOutput('main')(output)
-    process.exit(0)
-  } catch (e) {
-    console.error(e.stack);
-    process.exit(1);
-  }
-})();
-
 // var processImage = () => {
 //   let arg1 = 20;
 //   const pythonProcess = spawn('python',["./test.py", arg1]);
 //   //Listen for data from python script
 //   pythonProcess.stdout.on('data', (data) => {
-//     // Do something with the data returned from python script
-
-//     //console.log("logging data", data.toString())
+//     console.log("logging data", data.toString())
 //     return data.toString()
-
 //   });
 // }
 
@@ -85,7 +73,7 @@ var upload = multer({ storage: storage })
 // });
 
 //post request to handle the inbound image
-app.post('/upload/photo', upload.single('myImage'), function(req,res, next){
+app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
     const file = req.file;
 
     if (!file) {
@@ -93,19 +81,47 @@ app.post('/upload/photo', upload.single('myImage'), function(req,res, next){
       error.httpStatusCode = 400
       return next(error)
     }
+    processImage().then(output => {
+      res.setHeader('Content-Type', 'application/json');
+      res.json({ "price": `${output}`});
+    })
 
     // Method for initiating analysis of the image
-    processImage();
+    // (async () => {
+    //   try {
+        
+    //     logOutput()(output)
+        
+    //     process.exit(0)
+        
+    //   } catch (e) {
+    //     console.error(e.stack);
+    //     process.exit(1);
+    //   }
+    // })().then(output => {
+    //   console.log("this is fucking bullshit");
+      
+      
+    //   //res.send(400);
+    //   //res.json({"price": `${output}`})
+    // });
 
-    res.setHeader('Content-Type', 'application/json');
-    res.json({ "price": 20 });
+    // res.setHeader('Content-Type', 'application/json');
+    // res.json({ "price": 20 });
   });
 
   app.listen(5000,function(){
     console.log("Started on PORT 5000");
 
-    //remove this 
-    var test = processImage(); 
-    console.log("testing again", test);
+    // (async () => {
+    //   try {
+    //     const output = await processImage()
+    //     logOutput()(output)
+    //     process.exit(0)
+    //   } catch (e) {
+    //     console.error(e.stack);
+    //     process.exit(1);
+    //   }
+    // })();
   })
   
