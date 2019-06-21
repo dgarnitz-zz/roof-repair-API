@@ -43,16 +43,6 @@ var processImage = () => {
   });
 }
 
-// var processImage = () => {
-//   let arg1 = 20;
-//   const pythonProcess = spawn('python',["./test.py", arg1]);
-//   //Listen for data from python script
-//   pythonProcess.stdout.on('data', (data) => {
-//     console.log("logging data", data.toString())
-//     return data.toString()
-//   });
-// }
-
 // Set storage for pictures
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -66,11 +56,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 // ROUTES
-// get request for testing
-// app.get('/',function(req,res){
-//   res.sendFile(__dirname + '/index.html');
- 
-// });
 
 //post request to handle the inbound image
 app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
@@ -86,42 +71,9 @@ app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
       res.json({ "price": `${output}`});
     })
 
-    // Method for initiating analysis of the image
-    // (async () => {
-    //   try {
-        
-    //     logOutput()(output)
-        
-    //     process.exit(0)
-        
-    //   } catch (e) {
-    //     console.error(e.stack);
-    //     process.exit(1);
-    //   }
-    // })().then(output => {
-    //   console.log("this is fucking bullshit");
-      
-      
-    //   //res.send(400);
-    //   //res.json({"price": `${output}`})
-    // });
-
-    // res.setHeader('Content-Type', 'application/json');
-    // res.json({ "price": 20 });
   });
 
   app.listen(5000,function(){
     console.log("Started on PORT 5000");
-
-    // (async () => {
-    //   try {
-    //     const output = await processImage()
-    //     logOutput()(output)
-    //     process.exit(0)
-    //   } catch (e) {
-    //     console.error(e.stack);
-    //     process.exit(1);
-    //   }
-    // })();
   })
   
