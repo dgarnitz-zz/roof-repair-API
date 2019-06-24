@@ -14,11 +14,10 @@ const logOutput = () => (data) => console.log(`${data}`)
 
 // Method for calling machine learning
 var processImage = () => {
-  let arg1 = 30;
-  //const pythonProcess = spawn('python',["./test.py", arg1]);
+  let arg1 = 1;
   
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn('python',["./test.py", arg1]);
+    const pythonProcess = spawn('python',["./controller.py", arg1]);
     
     const out = []
     pythonProcess.stdout.on("data", data =>{
@@ -55,9 +54,7 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage })
 
-// ROUTES
-
-//post request to handle the inbound image
+//post request to handle the inbound image and form data
 app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
     const file = req.file;
 
