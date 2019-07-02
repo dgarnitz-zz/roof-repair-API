@@ -58,6 +58,10 @@ var upload = multer({ storage: storage })
 app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
     const file = req.file;
 
+    // access the text data from the form
+    console.log(req.body.location)
+    console.log(req.body.season)
+
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
