@@ -27,3 +27,5 @@ data = np.reshape(data, (1, -1))
 predict = loaded_model.predict(data)
 rounded = math.ceil(predict[0])
 print(rounded)
+
+
