@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run start --prefix ~/Documents/Dissertation/Code/Client/price-calculator\"",
-    "test": "mocha test.js"
+    "test": "mocha test.js --exit"
   },
   "author": "dgarnitz",
   "license": "ISC",
