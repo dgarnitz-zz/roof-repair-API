@@ -99,3 +99,9 @@ app.post('/upload/photo', upload.single('myImage'), function(req, res, next){
   })
 
 });
+
+//get route to handle reinforcement learning
+app.get('/reinforcementLearning', function (req, res) {
+  console.log(`The previous estimate was ${req.query.estimate}. The model will be updated to account for this`)
+  res.sendStatus(200)
+})
