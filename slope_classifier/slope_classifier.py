@@ -4,6 +4,8 @@ from keras.models import Model
 from keras.models import load_model
 from keras.preprocessing import image
 
+#this method grabs an image of a roof saved Multer, then uses it as input in a model that classifies whether 
+#it has a steep or normal slope, then returns a feature vector representing that
 def classifySlope(): 
     
     #Load keras model

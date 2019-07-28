@@ -4,6 +4,8 @@ from keras.models import Model
 from keras.models import load_model
 from keras.preprocessing import image
 
+#this method grabs an image of a roof saved Multer, then uses it as input in a model that classifies whether 
+#it is made of asphalt, clay, wood or metal, then returns a feature vector representing that
 def classifyMaterial(): 
     
     #Load keras model

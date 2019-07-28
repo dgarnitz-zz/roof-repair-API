@@ -6,6 +6,7 @@ import math
 import ast
 from material_classifier.material_classifier import classifyMaterial
 from slope_classifier.slope_classifier import classifySlope
+from condition_classifier.condition_classifier import classifyCondition
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
@@ -28,12 +29,16 @@ slope = classifySlope()
 #classify the material
 material = classifyMaterial()
 
+#classify the condition
+condition = classifyCondition()
+
 #create input to regression model
 seasons.extend([8.21, 3.9])
 seasons.extend(slope)
 seasons.extend([0])
 seasons.extend(material)
 seasons.append(location)
+seasons.append(condition)
 data = seasons
 data = np.reshape(data, (1, -1))
 
